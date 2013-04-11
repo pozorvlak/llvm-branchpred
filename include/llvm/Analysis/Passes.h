@@ -116,6 +116,27 @@ namespace llvm {
 
   //===--------------------------------------------------------------------===//
   //
+  // createBranchPredictionPass - This pass predicts branch outcomes with 
+  // estimated probabilities.
+  //
+  FunctionPass *createBranchPredictionPass();
+
+  //===--------------------------------------------------------------------===//
+  //
+  // createBlockBranchFrequencyPass - This pass staticly calculates
+  // intraprocedural basic block and edge execution frequencies.
+  //
+  FunctionPass *createBlockEdgeFrequencyPass();
+
+  //===--------------------------------------------------------------------===//
+  //
+  // createStaticProfilePass - This pass performs interprocedural static
+  // profiling of blocks, edges and call to functions.
+  //
+  ModulePass *createStaticProfilePass();
+
+  //===--------------------------------------------------------------------===//
+  //
   // createDSAAPass - This pass implements simple context sensitive alias
   // analysis.
   //

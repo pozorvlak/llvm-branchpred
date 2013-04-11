@@ -98,6 +98,9 @@ namespace {
       (void) llvm::createNoAAPass();
       (void) llvm::createNoProfileInfoPass();
       (void) llvm::createProfileEstimatorPass();
+      (void) llvm::createBranchPredictionPass();
+      (void) llvm::createBlockEdgeFrequencyPass();
+      (void) llvm::createStaticProfilePass();
       (void) llvm::createProfileVerifierPass();
       (void) llvm::createProfileLoaderPass();
       (void) llvm::createPromoteMemoryToRegisterPass();
