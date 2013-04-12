@@ -1,0 +1,16 @@
+.dir
+*.o
+*.d
+Makefile.config
+config.status
+config.log
+Release/
+llvm.spec
+projects/sample/Release/lib/
+unittests/ADT/Release/ADTTests
+unittests/Analysis/Release/AnalysisTests
+unittests/ExecutionEngine/JIT/Release/JITTests
+unittests/ExecutionEngine/Release/ExecutionEngineTests
+unittests/Support/Release/SupportTests
+unittests/Transforms/Utils/Release/UtilsTests
+unittests/VMCore/Release/VMCoreTests
