@@ -1,6 +1,8 @@
 .dir
 *.o
 *.d
+*.inc
+*.def
 Makefile.config
 config.status
 config.log
