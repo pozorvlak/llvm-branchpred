@@ -24,7 +24,7 @@
 // on Microarchitecture. IEEE, 1994.
 //===----------------------------------------------------------------------===//
 
-#define DEBUG_TYPE "branch-prediction"
+#define _TYPE "branch-prediction"
 
 #include "llvm/Analysis/BranchPredictionPass.h"
 #include "llvm/Pass.h"
@@ -198,7 +198,7 @@ void BranchPredictionPass::CalculateBranchProbabilities(BasicBlock *BB) {
   unsigned backedges = BPI->CountBackEdges(BB);
 
   // Some debug output.
-  DEBUG(errs() << "  Basic Block: " << BB->getName() << "\n");
+  DEBUG(errs() << "  Basic Block: " << BB << "\n");
 
   // The basic block must have successors,
   // so that we can have something to profile
@@ -212,7 +212,7 @@ void BranchPredictionPass::CalculateBranchProbabilities(BasicBlock *BB) {
         BasicBlock *succ = TI->getSuccessor(s);
         Edge edge = std::make_pair(BB, succ);
         EdgeProbabilities[edge] = 0.0f;
-        DEBUG(errs() << "    " << BB->getName() << "->" << succ->getName()
+        DEBUG(errs() << "    " << BB << "->" << succ
                      << ": " << format("%.3f", EdgeProbabilities[edge])
                      << "\n");
       }
@@ -227,7 +227,7 @@ void BranchPredictionPass::CalculateBranchProbabilities(BasicBlock *BB) {
           EdgeProbabilities[edge] =
               BHI->getProbabilityTaken(LOOP_BRANCH_HEURISTIC) / backedges;
 
-          DEBUG(errs() << "    " << BB->getName() << "->" << succ->getName()
+          DEBUG(errs() << "    " << BB << "->" << succ
                        << ": " << format("%.3f", EdgeProbabilities[edge])
                        << "\n");
         } else {
@@ -240,7 +240,7 @@ void BranchPredictionPass::CalculateBranchProbabilities(BasicBlock *BB) {
               BHI->getProbabilityNotTaken(LOOP_BRANCH_HEURISTIC) /
               (successors - backedges);
 
-          DEBUG(errs() << "    " << BB->getName() << "->" << succ->getName()
+          DEBUG(errs() << "    " << BB << "->" << succ
                        << ": " << format("%.3f", EdgeProbabilities[edge])
                        << "\n");
         }
@@ -254,7 +254,7 @@ void BranchPredictionPass::CalculateBranchProbabilities(BasicBlock *BB) {
         Edge edge = std::make_pair(BB, succ);
         EdgeProbabilities[edge] = 1.0f / successors;
 
-        DEBUG(errs() << "    " << BB->getName() << "->" << succ->getName()
+        DEBUG(errs() << "    " << BB << "->" << succ
                      << ": " << format("%.3f", EdgeProbabilities[edge])
                      << "\n");
       }
@@ -286,12 +286,12 @@ void BranchPredictionPass::CalculateBranchProbabilities(BasicBlock *BB) {
           addEdgeProbability(heuristic, BB, pred);
       }
 
-      DEBUG(errs() << "    " << trueEdge.first->getName() << "->"
-                   << trueEdge.second->getName() << ": "
+      DEBUG(errs() << "    " << trueEdge.first << "->"
+                   << trueEdge.second << ": "
                    << format("%.3f", EdgeProbabilities[trueEdge]) << "\n");
 
-      DEBUG(errs() << "    " << falseEdge.first->getName() << "->"
-                   << falseEdge.second->getName() << ": "
+      DEBUG(errs() << "    " << falseEdge.first << "->"
+                   << falseEdge.second << ": "
                    << format("%.3f", EdgeProbabilities[falseEdge]) << "\n");
     }
   }
@@ -307,8 +307,8 @@ void BranchPredictionPass::addEdgeProbability(BranchHeuristics heuristic,
 
   // Show which heuristic matched
   DEBUG(errs() << "    " << BHI->getHeuristicName(heuristic) << " Matched: ("
-               << successorTaken->getName() << " ; "
-               << successorNotTaken->getName() << ")\n");
+               << successorTaken << " ; "
+               << successorNotTaken << ")\n");
 
   // Get the edges.
   Edge edgeTaken = std::make_pair(root, successorTaken);
