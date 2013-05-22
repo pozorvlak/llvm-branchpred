@@ -652,16 +652,18 @@ void Interpreter::visitBranchInst(BranchInst &I) {
   ExecutionContext &SF = ECStack.back();
   BasicBlock *Dest;
 
-  printf("Encountered a branch\n");
+  printf("Branch %p - ", &I);
   Dest = I.getSuccessor(0);          // Uncond branches have a fixed dest...
   if (!I.isUnconditional()) {
     Value *Cond = I.getCondition();
     if (getOperandValue(Cond, SF).IntVal == 0) { // If false cond...
       Dest = I.getSuccessor(1);
-      printf("Not taking branch\n");
+      printf("not taken\n");
     } else {
-      printf("Taking branch\n");
+      printf("taken\n");
     }
+  } else {
+    printf("unconditional\n");
   }
   SwitchToNewBasicBlock(Dest, SF);
 }
