@@ -46,6 +46,7 @@
 #include "llvm/Support/Format.h"
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Module.h"
+#include "llvm/Metadata.h"
 //#include "llvm/Analysis/MemoryColoring1.h"
 
 using namespace llvm;
@@ -284,6 +285,16 @@ void BranchPredictionPass::CalculateBranchProbabilities(BasicBlock *BB) {
         if (pred.first)
           // Recalculate edge probability.
           addEdgeProbability(heuristic, BB, pred);
+
+          // Store heuristic information in metadata
+          LLVMContext& C = BB->getContext();
+          Value * const succeeded = pred.first ?
+                  ConstantInt::getTrue(C) :
+                  ConstantInt::getFalse(C);
+          MDNode* N = MDNode::get(C, &succeeded, 1);
+          // XXX Need to strip spaces from heuristic name
+          // or LLVM helpfully aborts.
+          BB->getTerminator()->setMetadata(BHI->getHeuristicName(heuristic), N);
       }
 
       DEBUG(errs() << "    " << trueEdge.first << "->"

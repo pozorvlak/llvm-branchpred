@@ -50,15 +50,15 @@ using namespace llvm;
 // enumeration. This order will be used to index this list.
 const struct BranchProbabilities
   BranchHeuristicsInfo::probList[BranchHeuristicsInfo::numBranchHeuristics] = {
-  { LOOP_BRANCH_HEURISTIC, 0.88, 0.12, "Loop Branch Heuristic" },
-  { POINTER_HEURISTIC,     0.60, 0.40, "Pointer Heuristic"     },
-  { CALL_HEURISTIC,        0.78, 0.22, "Call Heuristic"        },
-  { OPCODE_HEURISTIC,      0.84, 0.16, "Opcode Heuristic"      },
-  { LOOP_EXIT_HEURISTIC,   0.80, 0.20, "Loop Exit Heuristic"   },
-  { RETURN_HEURISTIC,      0.72, 0.28, "Return Heuristic"      },
-  { STORE_HEURISTIC,       0.55, 0.45, "Store Heuristic"       },
-  { LOOP_HEADER_HEURISTIC, 0.75, 0.25, "Loop Header Heuristic" },
-  { GUARD_HEURISTIC,       0.62, 0.38, "Guard Heuristic"       },
+  { LOOP_BRANCH_HEURISTIC, 0.88, 0.12, "LoopBranchHeuristic" },
+  { POINTER_HEURISTIC,     0.60, 0.40, "PointerHeuristic"     },
+  { CALL_HEURISTIC,        0.78, 0.22, "CallHeuristic"        },
+  { OPCODE_HEURISTIC,      0.84, 0.16, "OpcodeHeuristic"      },
+  { LOOP_EXIT_HEURISTIC,   0.80, 0.20, "LoopExitHeuristic"   },
+  { RETURN_HEURISTIC,      0.72, 0.28, "ReturnHeuristic"      },
+  { STORE_HEURISTIC,       0.55, 0.45, "StoreHeuristic"       },
+  { LOOP_HEADER_HEURISTIC, 0.75, 0.25, "LoopHeaderHeuristic" },
+  { GUARD_HEURISTIC,       0.62, 0.38, "GuardHeuristic"       },
 };
 
 BranchHeuristicsInfo::BranchHeuristicsInfo(BranchPredictionInfo *BPI) {
