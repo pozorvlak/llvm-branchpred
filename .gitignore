@@ -16,3 +16,6 @@ unittests/ExecutionEngine/Release/ExecutionEngineTests
 unittests/Support/Release/SupportTests
 unittests/Transforms/Utils/Release/UtilsTests
 unittests/VMCore/Release/VMCoreTests
+Release/
+Debug/
+Debug+Asserts/
