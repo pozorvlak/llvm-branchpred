@@ -26,6 +26,7 @@
 #include "llvm/Support/MathExtras.h"
 #include <algorithm>
 #include <cmath>
+#include <cstdio>
 using namespace llvm;
 
 STATISTIC(NumDynamicInsts, "Number of dynamic instructions executed");
@@ -651,11 +652,16 @@ void Interpreter::visitBranchInst(BranchInst &I) {
   ExecutionContext &SF = ECStack.back();
   BasicBlock *Dest;
 
+  printf("Encountered a branch\n");
   Dest = I.getSuccessor(0);          // Uncond branches have a fixed dest...
   if (!I.isUnconditional()) {
     Value *Cond = I.getCondition();
-    if (getOperandValue(Cond, SF).IntVal == 0) // If false cond...
+    if (getOperandValue(Cond, SF).IntVal == 0) { // If false cond...
       Dest = I.getSuccessor(1);
+      printf("Not taking branch\n");
+    } else {
+      printf("Taking branch\n");
+    }
   }
   SwitchToNewBasicBlock(Dest, SF);
 }
