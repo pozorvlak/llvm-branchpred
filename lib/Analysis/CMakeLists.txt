@@ -9,6 +9,7 @@ add_llvm_library(LLVMAnalysis
   BranchHeuristicsInfo.cpp
   BranchPredictionInfo.cpp
   BranchPredictionPass.cpp
+  BlockEdgeFrequencyPass.cpp
   CFGPrinter.cpp
   CaptureTracking.cpp
   ConstantFolding.cpp
