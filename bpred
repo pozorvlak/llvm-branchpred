@@ -1,6 +1,6 @@
 #!/bin/sh
 
-bindir=$(dirname $0)/Debug+Asserts/bin
+bindir=$(dirname $0)/Release/bin
 
 for i in $*; do
         basename=$(basename $i .c)
