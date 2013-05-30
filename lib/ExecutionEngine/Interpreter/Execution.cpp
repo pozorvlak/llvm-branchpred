@@ -651,10 +651,11 @@ void Interpreter::visitUnreachableInst(UnreachableInst &I) {
 void Interpreter::visitBranchInst(BranchInst &I) {
   ExecutionContext &SF = ECStack.back();
   BasicBlock *Dest;
+  BasicBlock *Src = I.getParent();
 
-  printf("Branch %p - ", &I);
   Dest = I.getSuccessor(0);          // Uncond branches have a fixed dest...
   if (!I.isUnconditional()) {
+    printf("Branch %s - ", Src->getName().data());
     Value *Cond = I.getCondition();
     if (getOperandValue(Cond, SF).IntVal == 0) { // If false cond...
       Dest = I.getSuccessor(1);
@@ -663,7 +664,6 @@ void Interpreter::visitBranchInst(BranchInst &I) {
       printf("taken\n");
     }
   } else {
-    printf("unconditional\n");
   }
   SwitchToNewBasicBlock(Dest, SF);
 }

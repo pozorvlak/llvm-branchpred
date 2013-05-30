@@ -292,9 +292,9 @@ void BranchPredictionPass::CalculateBranchProbabilities(BasicBlock *BB) {
                   ConstantInt::getTrue(C) :
                   ConstantInt::getFalse(C);
           MDNode* N = MDNode::get(C, &succeeded, 1);
-          // XXX Need to strip spaces from heuristic name
-          // or LLVM helpfully aborts.
           BB->getTerminator()->setMetadata(BHI->getHeuristicName(heuristic), N);
+          // LLVM makes this name unique
+          BB->setName("basic_block");
       }
 
       DEBUG(errs() << "    " << trueEdge.first << "->"
