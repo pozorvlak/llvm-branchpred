@@ -655,13 +655,13 @@ void Interpreter::visitBranchInst(BranchInst &I) {
 
   Dest = I.getSuccessor(0);          // Uncond branches have a fixed dest...
   if (!I.isUnconditional()) {
-    printf("Branch %s - ", Src->getName().data());
+    fprintf(stderr, "Branch %s - ", Src->getName().data());
     Value *Cond = I.getCondition();
     if (getOperandValue(Cond, SF).IntVal == 0) { // If false cond...
       Dest = I.getSuccessor(1);
-      printf("not taken\n");
+      fprintf(stderr, "not taken\n");
     } else {
-      printf("taken\n");
+      fprintf(stderr, "taken\n");
     }
   } else {
   }

@@ -7,6 +7,7 @@ for i in $*; do
         $bindir/clang -S -emit-llvm $i
         $bindir/opt -branch-prediction -o $basename.ann $basename.s
         $bindir/llvm-dis $basename.ann
-        $bindir/lli -force-interpreter $basename.ann
+        $bindir/lli -force-interpreter $basename.ann 2> $basename.trace
+        ./make_csv $basename
 done
 

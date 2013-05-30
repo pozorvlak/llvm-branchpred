@@ -1,0 +1,38 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use 5.010;
+use Text::CSV::Slurp;
+
+my $basename = $ARGV[0];
+my $irfilename = "$basename.ann.ll";
+open my $irfile, "<", $irfilename;
+my %branches;
+my $last_bb;
+while (<$irfile>) {
+    if (/^(basic_block.*):/) {
+        $last_bb = $1;
+    } elsif (/LoopBranchHeuristic/) {
+        die "No basic block yet seen at $irfilename line $." unless $last_bb;
+        my %branch = ( name => $last_bb, taken => 0, "not taken" => 0 );
+        while (/!(\w+) !(\d+)/g) {
+            $branch{$1} = $2;
+        }
+        $branches{$last_bb} = \%branch;
+    }
+}
+close $irfile;
+
+my $tracefilename = "$basename.trace";
+open my $tracefile, "<", $tracefilename;
+while (<$tracefile>) {
+    if (/^Branch (basic_block.*) - (taken|not taken)/) {
+        $branches{$1}{$2}++;
+    }
+}
+close $tracefile;
+
+open my $csvfile, ">", "$basename.csv";
+print $csvfile Text::CSV::Slurp->create( input => [ values %branches ] );
+
