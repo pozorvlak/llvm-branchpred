@@ -19,3 +19,4 @@ unittests/VMCore/Release/VMCoreTests
 Release/
 Debug/
 Debug+Asserts/
+benchmarks/
