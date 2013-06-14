@@ -6,7 +6,7 @@ use 5.010;
 use Text::CSV::Slurp;
 
 my $basename = $ARGV[0];
-my $irfilename = "$basename.ann.ll";
+my $irfilename = "$basename.ll";
 open my $irfile, "<", $irfilename;
 my %branches;
 my $last_bb;

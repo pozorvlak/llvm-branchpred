@@ -2,12 +2,47 @@
 
 bindir=$(dirname $0)/Release/bin
 
-for i in $*; do
-        basename=$(basename $i .c)
-        $bindir/clang -S -emit-llvm $i
-        $bindir/opt -branch-prediction -o $basename.ann $basename.s
-        $bindir/llvm-dis $basename.ann
-        $bindir/lli -force-interpreter $basename.ann 2> $basename.trace
-        ./make_csv $basename
+ARGS=$(getopt -o o:I:D: -n $0 -- "$@");
+
+if [ $? -ne 0 ]; then
+        exit 1
+fi
+
+eval set -- "$ARGS";
+
+clang_opts=""
+while true; do
+        case "$1" in
+                -o)
+                        shift;
+                        if [ -n "$1" ]; then
+                                outfile=$1;
+                                shift;
+                        fi
+                        ;;
+                -I|-D)
+                        clang_opts="$clang_opts $1 $2"
+                        shift;
+                        shift;
+                        ;;
+
+                --)
+                        shift;
+                        break;
+                        ;;
+        esac
 done
 
+echo "Clang options: $clang_opts\n"
+
+objfiles=""
+for i in $*; do
+        basename=$(basename $i .c)
+        $bindir/clang -S -emit-llvm $clang_opts $i
+        $bindir/opt -branch-prediction -o $basename.ann $basename.s
+        objfiles="$objfiles $basename.ann"
+done
+$bindir/llvm-ld -o $outfile $objfiles
+$bindir/llvm-dis $outfile.bc
+$bindir/lli -force-interpreter $outfile.bc 2> $outfile.trace
+$(dirname $0)/make_csv $outfile
