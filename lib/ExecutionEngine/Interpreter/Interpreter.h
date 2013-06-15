@@ -23,6 +23,7 @@
 #include "llvm/Support/ErrorHandling.h"
 #include "llvm/Support/InstVisitor.h"
 #include "llvm/Support/raw_ostream.h"
+#include <map>
 namespace llvm {
 
 class IntrinsicLowering;
@@ -78,6 +79,12 @@ struct ExecutionContext {
   AllocaHolderHandle    Allocas;    // Track memory allocated by alloca
 };
 
+// Count how many times a branch was taken and not taken.
+struct TakenCount {
+        unsigned long long Taken;
+        unsigned long long NotTaken;
+};
+
 // Interpreter - This class represents the entirety of the interpreter.
 //
 class Interpreter : public ExecutionEngine, public InstVisitor<Interpreter> {
@@ -92,6 +99,10 @@ class Interpreter : public ExecutionEngine, public InstVisitor<Interpreter> {
   // AtExitHandlers - List of functions to call when the program exits,
   // registered with the atexit() library function.
   std::vector<Function*> AtExitHandlers;
+
+  // Count branch statistics
+  std::map<StringRef, TakenCount> BranchStatistics;
+  void dumpBranchStatistics();
 
 public:
   explicit Interpreter(Module *M);

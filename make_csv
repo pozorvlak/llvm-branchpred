@@ -24,14 +24,22 @@ while (<$irfile>) {
 }
 close $irfile;
 
-my $tracefilename = "$basename.trace";
-open my $tracefile, "<", $tracefilename;
-while (<$tracefile>) {
-    if (/^Branch (basic_block.*) - (taken|not taken)/) {
-        $branches{$1}{$2}++;
+if (-e "branch_stats.csv") {
+    my $stats = Text::CSV::Slurp->load(file => "branch_stats.csv");
+    for my $branch (@$stats) {
+        $branches{$branch->{name}}{taken} = $branch->{taken};
+        $branches{$branch->{name}}{"not taken"} = $branch->{"not taken"};
     }
+} else {
+    my $tracefilename = "$basename.trace";
+    open my $tracefile, "<", $tracefilename;
+    while (<$tracefile>) {
+        if (/^Branch (basic_block.*) - (taken|not taken)/) {
+            $branches{$1}{$2}++;
+        }
+    }
+    close $tracefile;
 }
-close $tracefile;
 
 open my $csvfile, ">", "$basename.csv";
 print $csvfile Text::CSV::Slurp->create( input => [ values %branches ] );

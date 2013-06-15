@@ -655,13 +655,13 @@ void Interpreter::visitBranchInst(BranchInst &I) {
 
   Dest = I.getSuccessor(0);          // Uncond branches have a fixed dest...
   if (!I.isUnconditional()) {
-    fprintf(stderr, "Branch %s - ", Src->getName().data());
+    TakenCount& tc = BranchStatistics[Src->getName()];
     Value *Cond = I.getCondition();
     if (getOperandValue(Cond, SF).IntVal == 0) { // If false cond...
       Dest = I.getSuccessor(1);
-      fprintf(stderr, "not taken\n");
+      tc.NotTaken++;
     } else {
-      fprintf(stderr, "taken\n");
+      tc.Taken++;
     }
   } else {
   }
@@ -1323,6 +1323,21 @@ void Interpreter::callFunction(Function *F,
 }
 
 
+void Interpreter::dumpBranchStatistics() {
+  FILE *fh = fopen("branch_stats.csv", "w");
+  if (fh) {
+    std::map<StringRef, TakenCount>::iterator i;
+    fprintf(fh, "name, taken, \"not taken\"\n");
+    for (i = BranchStatistics.begin(); i != BranchStatistics.end(); ++i) {
+      fprintf(fh, "%s, %llu, %llu\n",
+          i->first.data(), i->second.Taken, i->second.NotTaken);
+    }
+  } else {
+    fprintf(stderr, "Couldn't open branch_stats.csv\n");
+  }
+}
+
+
 void Interpreter::run() {
   while (!ECStack.empty()) {
     // Interpret a single instruction & increment the "PC".
@@ -1357,4 +1372,5 @@ DEBUG(
     });
 #endif
   }
+  dumpBranchStatistics();
 }
