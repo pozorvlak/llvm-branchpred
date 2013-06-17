@@ -32,7 +32,7 @@ if (-e "branch_stats.csv") {
     }
 } else {
     my $tracefilename = "$basename.trace";
-    open my $tracefile, "<", $tracefilename;
+    open my $tracefile, "<", $tracefilename or die "Can't open $tracefilename";
     while (<$tracefile>) {
         if (/^Branch (basic_block.*) - (taken|not taken)/) {
             $branches{$1}{$2}++;
