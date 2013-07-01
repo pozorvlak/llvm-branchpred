@@ -1,0 +1,18 @@
+CallHeuristic,GuardHeuristic,LoopBranchHeuristic,LoopExitHeuristic,LoopHeaderHeuristic,OpcodeHeuristic,PointerHeuristic,ReturnHeuristic,StoreHeuristic,name,"not taken",taken
+1,1,1,1,1,0,1,1,1,basic_block27.i.i,0,0
+0,1,1,1,1,0,1,1,0,basic_block9.i.i,0,0
+0,1,1,1,1,0,1,1,1,basic_block18.i,0,0
+1,1,0,0,1,1,1,1,0,basic_block36.i6,100,23800
+1,1,0,0,1,1,1,0,0,basic_block.i.i,76800,614400
+1,1,0,0,1,1,1,0,1,basic_block.i,1,0
+0,1,0,0,1,1,1,0,0,basic_block45.i7,1,76800
+1,1,0,0,1,1,1,1,0,basic_block18.i4,23800,7568400
+0,1,1,1,1,1,1,1,1,basic_block36.i,0,0
+0,1,1,1,1,0,1,1,0,basic_block27.i,0,0
+0,1,1,1,1,1,1,1,0,basic_block18.i11.i,0,0
+0,1,1,1,1,0,1,1,1,basic_block9.i,0,0
+1,1,0,0,1,1,1,1,0,basic_block.i2,1,100
+1,1,0,0,1,1,1,1,0,basic_block27.i5,100,32000
+1,1,0,0,1,1,1,1,0,basic_block9.i3,100,23800
+0,1,1,1,1,0,1,1,0,basic_block45.i,0,0
+0,1,1,1,1,1,1,1,0,basic_block9.i10.i,0,0
