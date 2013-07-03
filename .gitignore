@@ -3,10 +3,10 @@
 *.d
 *.inc
 *.def
+*.pyc
 Makefile.config
 config.status
 config.log
-Release/
 llvm.spec
 projects/sample/Release/lib/
 unittests/ADT/Release/ADTTests
@@ -17,6 +17,7 @@ unittests/Support/Release/SupportTests
 unittests/Transforms/Utils/Release/UtilsTests
 unittests/VMCore/Release/VMCoreTests
 Release/
+Release+Debug/
 Debug/
 Debug+Asserts/
 benchmarks/
