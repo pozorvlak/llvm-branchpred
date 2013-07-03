@@ -2,6 +2,9 @@ import csv as csv
 import sys as sys
 import numpy as np
 from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.ensemble import GradientBoostingClassifier
 
 def read_raw_file(filename):
     # Load in the training csv file
@@ -40,8 +43,12 @@ def write_munged():
     for row in data:
         open_file_object.writerow(row)
 
-def classifier():
-    return LogisticRegression()
+def classifiers():
+    return { "Logistic regression" : LogisticRegression(),
+             "3-nearest neighbours" : KNeighborsClassifier(3, p=1),
+             "Ada boost" : AdaBoostClassifier(),
+             "Gradient boost" :
+                 GradientBoostingClassifier(n_estimators=50, learning_rate=1.0)}
 
 if __name__=="__main__":
     write_munged()
