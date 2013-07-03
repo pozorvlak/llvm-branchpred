@@ -22,10 +22,13 @@ def munge(data):
     data = np.array(np.delete(data, [name], 1), np.float)
     not_taken -=1
     taken -= 1
-    total = (data[:, taken] + data[:, not_taken] + 1)
+    total = data[:, taken] + data[:, not_taken]
+    zeroes = np.where(total == 0)
+    data = np.delete(data, zeroes, 0)
+    total = np.delete(total, zeroes, 0)
     probs = data[:, taken] / total
-    data[:, not_taken] = probs # now contains probabilities
-    data = np.delete(data, [taken], 1)
+    data = np.hstack([data, np.column_stack((total, probs))])
+    data = np.delete(data, [not_taken, taken], 1)
     return np.array(data, np.float)
 
 def read_files(filenames):

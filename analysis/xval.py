@@ -9,7 +9,7 @@ def accuracy(actual, predictions):
 def main():
     #read in  data, parse into training and target sets
     dataset = read_files(sys.argv[1:])
-    target = dataset[0::,9]
+    target = dataset[0::,10]
     train = dataset[0::,0::8]
 
     cs = classifiers()
@@ -26,12 +26,10 @@ def main():
         for traincv, testcv in cv:
             trained = cfr.fit(train[traincv], target[traincv])
             predictions = trained.predict(train[testcv])
-            print predictions
             results.append( accuracy(target[testcv], predictions) )
 
         #print out the mean of the cross-validated results
         print "Results: " + str( np.array(results).mean() )
-        break
 
 if __name__=="__main__":
     main()
