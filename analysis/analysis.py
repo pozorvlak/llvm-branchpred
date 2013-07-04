@@ -27,7 +27,10 @@ def munge(data):
     data = np.delete(data, zeroes, 0)
     total = np.delete(total, zeroes, 0)
     probs = data[:, taken] / total
-    data = np.hstack([data, np.column_stack((total, probs))])
+    # XXX we actually want to minimise E(lost cycles)
+    # The best threshold may not be at 50%
+    predict_taken = data[:, taken] > data[:, not_taken]
+    data = np.hstack([data, np.column_stack((total, probs, predict_taken))])
     data = np.delete(data, [not_taken, taken], 1)
     return np.array(data, np.float)
 

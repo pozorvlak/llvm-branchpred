@@ -2,7 +2,6 @@ from sklearn import cross_validation
 import numpy as np
 import sys as sys
 from analysis import read_files, classifiers
-from logloss import llfun
 
 def accuracy(actual, predictions):
     return float(sum(actual == predictions))/len(actual)
@@ -10,11 +9,11 @@ def accuracy(actual, predictions):
 def main():
     #read in  data, parse into training and target sets
     dataset = read_files(sys.argv[1:])
-    target = dataset[0::,10]
+    target = dataset[0::,11]
     train = dataset[0::,0::8]
 
     cs = classifiers()
-    print "Lower numbers are better"
+    print "Percentage accuracy: higher numbers are better"
     for name in cs.keys():
         print "Performing 5-fold cross validation with " + name
         cfr = cs[name]
@@ -29,7 +28,7 @@ def main():
             trained = cfr.fit(train[traincv], target[traincv])
             predictions = trained.predict(train[testcv])
             # print predictions
-            results.append( llfun(target[testcv], predictions) )
+            results.append( accuracy(target[testcv], predictions) )
 
         #print out the mean of the cross-validated results
         print "Results: " + str( np.array(results).mean() )
