@@ -3,14 +3,15 @@ import numpy as np
 import sys as sys
 from analysis import read_files, classifiers
 
-def accuracy(actual, predictions):
-    return float(sum(actual == predictions))/len(actual)
+def accuracy(actual, predictions, weights):
+    return float(sum((actual == predictions) * weights)/sum(weights))
 
 def main():
     #read in  data, parse into training and target sets
     dataset = read_files(sys.argv[1:])
-    target = dataset[0::,11]
-    train = dataset[0::,0::8]
+    target = dataset[:, 11]
+    train = dataset[:, 0::8]
+    weights = dataset[:, 9]
 
     cs = classifiers()
     print "Percentage accuracy: higher numbers are better"
@@ -28,7 +29,8 @@ def main():
             trained = cfr.fit(train[traincv], target[traincv])
             predictions = trained.predict(train[testcv])
             # print predictions
-            results.append( accuracy(target[testcv], predictions) )
+            score = accuracy(target[testcv], predictions, weights[testcv])
+            results.append(score)
 
         #print out the mean of the cross-validated results
         print "Results: " + str( np.array(results).mean() )
