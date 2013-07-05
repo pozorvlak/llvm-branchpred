@@ -33,8 +33,8 @@ def main():
             results.append(score)
 
         #print out the mean of the cross-validated results
-        form = '{:<' + str(max_name_length) + '}  {}'
-        print form.format(name, np.array(results).mean())
+        print "{}  {}".format(name.ljust(max_name_length),
+                np.array(results).mean())
 
 if __name__=="__main__":
     main()
