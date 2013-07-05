@@ -49,12 +49,20 @@ def write_munged():
     for row in data:
         open_file_object.writerow(row)
 
+class PredictTrueClassifier:
+    def fit(self, features, target):
+        return self
+
+    def predict(self, features):
+        return np.ones(features.shape[0])
+
 def classifiers():
     return { "Logistic regression" : LogisticRegression(),
              "3-nearest neighbours" : KNeighborsClassifier(3, p=1),
              "Ada boost" : AdaBoostClassifier(),
              "Gradient boost" :
-                 GradientBoostingClassifier(n_estimators=50, learning_rate=1.0)}
+                 GradientBoostingClassifier(n_estimators=50, learning_rate=1.0),
+             "Always predict true" : PredictTrueClassifier()}
 
 if __name__=="__main__":
     write_munged()
