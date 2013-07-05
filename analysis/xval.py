@@ -14,9 +14,9 @@ def main():
     weights = dataset[:, 9]
 
     cs = classifiers()
+    max_name_length = max([len(name) for name in cs.keys()])
     print "Percentage accuracy: higher numbers are better"
     for name in cs.keys():
-        print "Performing 5-fold cross validation with " + name
         cfr = cs[name]
 
         #Simple K-Fold cross validation. 5 folds.
@@ -33,7 +33,8 @@ def main():
             results.append(score)
 
         #print out the mean of the cross-validated results
-        print "Results: " + str( np.array(results).mean() )
+        form = '{:<' + str(max_name_length) + '}  {}'
+        print form.format(name, np.array(results).mean())
 
 if __name__=="__main__":
     main()
