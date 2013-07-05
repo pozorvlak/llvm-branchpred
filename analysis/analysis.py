@@ -5,6 +5,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import BernoulliNB
 
@@ -64,6 +65,8 @@ def classifiers():
              "Ada boost" : AdaBoostClassifier(),
              "Gradient boost" :
                  GradientBoostingClassifier(n_estimators=50, learning_rate=1.0),
+             "Random forest" :
+                 RandomForestClassifier(n_estimators=10, n_jobs=-1), # no. cores
              "Always predict true" : PredictTrueClassifier(),
              "Decision tree" : DecisionTreeClassifier(),
              "Bernoulli Naive Bayes" : BernoulliNB() }
