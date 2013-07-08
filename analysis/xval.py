@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from sklearn import cross_validation
 import numpy as np
 import sys as sys

@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import csv as csv
 import sys as sys
 import numpy as np
