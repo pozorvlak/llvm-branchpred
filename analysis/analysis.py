@@ -9,6 +9,7 @@ from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import BernoulliNB
+from wularusclassifier import WuLarusClassifier
 
 def read_raw_file(filename):
     # Load in the training csv file
@@ -61,16 +62,18 @@ class PredictTrueClassifier:
         return np.ones(features.shape[0])
 
 def classifiers():
-    return { "Logistic regression" : LogisticRegression(),
-             "3-nearest neighbours" : KNeighborsClassifier(3, p=1),
-             "Ada boost" : AdaBoostClassifier(),
-             "Gradient boost" :
-                 GradientBoostingClassifier(n_estimators=50, learning_rate=1.0),
-             "Random forest" :
-                 RandomForestClassifier(n_estimators=10, n_jobs=-1), # no. cores
-             "Always predict true" : PredictTrueClassifier(),
-             "Decision tree" : DecisionTreeClassifier(),
-             "Bernoulli Naive Bayes" : BernoulliNB() }
+    return {
+        "Logistic regression" : LogisticRegression(),
+        "3-nearest neighbours" : KNeighborsClassifier(3, p=1),
+        "Ada boost" : AdaBoostClassifier(),
+        "Gradient boost" :
+            GradientBoostingClassifier(n_estimators=50, learning_rate=1.0),
+        "Random forest" :
+            RandomForestClassifier(n_estimators=10, n_jobs=-1), # no. cores
+        "Always predict true" : PredictTrueClassifier(),
+        "Decision tree" : DecisionTreeClassifier(),
+        "Bernoulli Naive Bayes" : BernoulliNB(),
+        "Wu-Larus" : WuLarusClassifier() }
 
 if __name__=="__main__":
     write_munged()
