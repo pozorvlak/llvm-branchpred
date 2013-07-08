@@ -10,7 +10,7 @@ def main():
     #read in  data, parse into training and target sets
     dataset = read_files(sys.argv[1:])
     target = dataset[:, 11]
-    train = dataset[:, 0:8]
+    train = dataset[:, 0:9]
     weights = dataset[:, 9]
 
     cs = classifiers()
