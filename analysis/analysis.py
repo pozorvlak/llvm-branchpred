@@ -49,7 +49,7 @@ def write_munged():
     data = read_files(sys.argv[1:])
     open_file_object = csv.writer(open("munged.csv", "wb"))
     header = ("call guard loop_branch loop_exit loop_header opcode " +
-        "pointer ret store prob").split()
+        "pointer ret store total prob prediction").split()
     open_file_object.writerow(header)
     for row in data:
         open_file_object.writerow(row)
