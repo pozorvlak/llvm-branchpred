@@ -2,12 +2,9 @@
 
 from analysis import *
 from pylab import *
+from matplotlib.mlab import PCA
+from mpl_toolkits.mplot3d import Axes3D
 import os
-
-data = read_all_files()
-
-[call, guard, loop_branch, loop_exit, loop_header, opcode, pointer, ret,
-        store, total, prob, prediction] = xrange(0, 12)
 
 def read_all_files():
     csvs = ["../csv/" + i for i in os.listdir("../csv/")]
@@ -41,3 +38,44 @@ def tail_size():
     print_percentage("High tail", high_count, total_count)
     print_percentage("Both tails", tail_count, total_count)
     print_percentage("Neither tail", total_count - tail_count, total_count)
+
+def jitter(data):
+    """Scaled random jitter for 2D arrays"""
+    jitter = zeros(data.shape)
+    [num_rows, num_cols] = data.shape
+    for i in xrange(0, num_cols):
+        jitter[:, i] = (rand(num_rows) - 0.5) / (var(data[:, i]) * 2)
+    return jitter
+
+def pca(dim):
+    pca = PCA(data[:, 0:9])
+    return pca.project(data[:, 0:9])[:, 0:dim]
+
+def scatter2d(data, color):
+    scatter(data[:, 0], data[:, 1], color=color, marker="x")
+
+def scatter2d_with_jitter():
+    proj2 = pca(2)
+    jittered = proj2 + jitter(proj2)
+    taken = jittered[data[:, prediction] == 1, :]
+    not_taken = jittered[data[:, prediction] == 0, :]
+    scatter2d(taken, "red")
+    scatter2d(not_taken, "blue")
+
+def scatter3d(axis, data, color):
+    axis.scatter(data[:, 0], data[:, 1], data[:, 2], color=color, marker="x")
+
+def scatter3d_with_jitter():
+    proj3 = pca(3)
+    fig = figure()
+    ax = Axes3D(fig)
+    jittered = proj3 + jitter(proj3)
+    taken = jittered[data[:, prediction] == 1, :]
+    not_taken = jittered[data[:, prediction] == 0, :]
+    scatter3d(ax, taken, "red")
+    scatter3d(ax, not_taken, "blue")
+
+data = read_all_files()
+
+[call, guard, loop_branch, loop_exit, loop_header, opcode, pointer, ret,
+        store, total, prob, prediction] = xrange(0, 12)
