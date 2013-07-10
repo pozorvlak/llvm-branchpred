@@ -23,7 +23,9 @@ def hist_by_attribute(attr):
     xticks([0, 1])
 
 def show_prob_dist():
-    hist(data[:, prob])
+    hist(data[:, prob], bins=50)
+    xlabel("Probability branch will be taken")
+    ylabel("Count of branches with probabilities in this range")
 
 def print_percentage(name, count, total_count):
     print "{}: {}, ({}%)".format(name, count, 100*(count + 0.0)/total_count)
