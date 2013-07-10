@@ -24,6 +24,20 @@ def show_prob_dist():
     xlabel("Probability branch will be taken")
     ylabel("Count of branches with probabilities in this range")
 
+def show_prob_impact(num_bars):
+    fig = figure()
+    ax = fig.add_subplot(111)
+    impact = zeros(num_bars)
+    bar_width = 1.0/num_bars
+    for i in xrange(0, num_bars):
+        lower = i * bar_width
+        upper = lower + bar_width
+        indices = logical_and(data[:, prob] >= lower, data[:, prob] < upper)
+        impact[i] = sum(data[indices, total])
+    ax.bar(arange(num_bars), impact)
+    ax.set_xticks(arange(0, num_bars+1, num_bars/10))
+    ax.set_xticklabels(arange(0, 1.1, 0.1))
+
 def print_percentage(name, count, total_count):
     print "{}: {}, ({}%)".format(name, count, 100*(count + 0.0)/total_count)
 
