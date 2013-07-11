@@ -24,7 +24,7 @@ def show_prob_dist():
     xlabel("Probability branch will be taken")
     ylabel("Count of branches with probabilities in this range")
 
-def show_prob_impact(num_bars):
+def show_prob_fn(num_bars, cost_fn):
     fig = figure()
     ax = fig.add_subplot(111)
     impact = zeros(num_bars)
@@ -33,10 +33,25 @@ def show_prob_impact(num_bars):
         lower = i * bar_width
         upper = lower + bar_width
         indices = logical_and(data[:, prob] >= lower, data[:, prob] < upper)
-        impact[i] = sum(data[indices, total])
+        impact[i] = cost_fn(indices)
     ax.bar(arange(num_bars), impact)
     ax.set_xticks(arange(0, num_bars+1, num_bars/10))
     ax.set_xticklabels(arange(0, 1.1, 0.1))
+    xlabel("Probability branch will be taken")
+
+def impact(indices):
+    return sum(data[indices, total])
+
+def show_prob_impact(num_bars):
+    show_prob_fn(num_bars, impact)
+    ylabel("Number of branch events with probabilities in this range")
+
+def num_mispredictions(indices):
+    return sum(data[indices, total] * (0.5 + abs(data[indices, prob] - 0.5)))
+
+def show_prob_cost(num_bars):
+    show_prob_fn(num_bars, num_mispredictions)
+    ylabel("Number of mispredictions if you predict all these branches wrongly")
 
 def print_percentage(name, count, total_count):
     print "{}: {}, ({}%)".format(name, count, 100*(count + 0.0)/total_count)
