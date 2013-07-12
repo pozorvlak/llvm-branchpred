@@ -7,8 +7,7 @@ from mpl_toolkits.mplot3d import Axes3D
 import os
 
 def read_all_files():
-    csvs = ["../csv/" + i for i in os.listdir("../csv/")]
-    return read_files(csvs)
+    return read_files(["training.csv"])
 
 def hist_by_attribute(attr):
     taken = data[data[:, prediction] == 1, attr]
