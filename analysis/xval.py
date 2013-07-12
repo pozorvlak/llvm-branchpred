@@ -37,6 +37,8 @@ def main():
     xval(target, train, np.ones(dataset.shape[0]))
     print "\nResults weighted by branch frequency"
     xval(target, train, dataset[:, 9])
+    print "\nResults weighted by number of mispredictions"
+    xval(target, train, dataset[:, 9] * (0.5 + abs(dataset[:, 10] - 0.5)))
 
 if __name__=="__main__":
     main()
