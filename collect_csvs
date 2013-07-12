@@ -1,0 +1,41 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use 5.010;
+
+use Text::CSV::Slurp;
+use File::Find;
+use Getopt::Std;
+
+my %opts;
+getopt(\%opts, 'os');
+my $trainingfile = $opts{o} || "training.csv";
+my $testfile = $opts{s} || "test.csv";
+
+my @training;
+my @test;
+my @dirs_to_search = @ARGV ? @ARGV : ("benchmarks");
+find(\&read_file, @dirs_to_search);
+srand(12345); # That's the kind of seed an idiot would use for his luggage!
+
+sub read_file {
+    if (/\.csv$/) {
+        my $data = Text::CSV::Slurp->load(file => $_);
+        for my $datum (@$data) {
+            if (rand > 0.1) {
+                push @training, $datum;
+            } else {
+                push @test, $datum;
+            }
+        }
+    }
+}
+
+open my $training_fh, ">", $trainingfile;
+print $training_fh Text::CSV::Slurp->create(input => \@training);
+close $training_fh;
+
+open my $test_fh, ">", $testfile;
+print $test_fh Text::CSV::Slurp->create(input => \@test);
+close $test_fh;
