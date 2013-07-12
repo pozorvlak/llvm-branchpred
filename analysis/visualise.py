@@ -86,10 +86,12 @@ def scatter2d(data, color):
 def scatter2d_with_jitter():
     proj2 = pca(2)
     jittered = proj2 + jitter(proj2)
-    taken = jittered[data[:, prediction] == 1, :]
-    not_taken = jittered[data[:, prediction] == 0, :]
-    scatter2d(taken, "red")
-    scatter2d(not_taken, "blue")
+    strong_taken = jittered[data[:, prob] > 0.9, :]
+    strong_not_taken = jittered[data[:, prob] < 0.1, :]
+    weak = jittered[logical_and(data[:, prob] >= 0.1, data[:, prob] <= 0.9), :]
+    scatter2d(strong_taken, "red")
+    scatter2d(strong_not_taken, "blue")
+    scatter2d(weak, "green")
 
 def scatter3d(axis, data, color):
     axis.scatter(data[:, 0], data[:, 1], data[:, 2], color=color, marker="x")
