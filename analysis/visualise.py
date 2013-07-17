@@ -83,8 +83,8 @@ def pca(dim):
     pca = PCA(data[:, 0:9])
     return pca.project(data[:, 0:9])[:, 0:dim]
 
-def scatter2d(data, color):
-    scatter(data[:, 0], data[:, 1], color=color, marker="x")
+def scatter2d(data, color, legend):
+    scatter(data[:, 0], data[:, 1], color=color, marker=".", label=legend)
 
 def scatter2d_with_jitter():
     proj2 = pca(2)
@@ -92,9 +92,10 @@ def scatter2d_with_jitter():
     strong_taken = jittered[data[:, prob] > 0.9, :]
     strong_not_taken = jittered[data[:, prob] < 0.1, :]
     weak = jittered[logical_and(data[:, prob] >= 0.1, data[:, prob] <= 0.9), :]
-    scatter2d(strong_taken, "red")
-    scatter2d(strong_not_taken, "blue")
-    scatter2d(weak, "green")
+    scatter2d(strong_taken, "red", "p > 0.9")
+    scatter2d(strong_not_taken, "blue", "p < 0.1")
+    scatter2d(weak, "green", "0.1 <= p <= 0.9")
+    legend()
 
 def scatter3d(axis, data, color):
     axis.scatter(data[:, 0], data[:, 1], data[:, 2], color=color, marker="x")
