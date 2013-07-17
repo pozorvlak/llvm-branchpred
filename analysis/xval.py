@@ -4,6 +4,9 @@ import numpy as np
 import sys as sys
 from analysis import read_files, classifiers
 
+[call, guard, loop_branch, loop_exit, loop_header, opcode, pointer, ret,
+        store, total, prob, prediction] = xrange(0, 12)
+
 def accuracy(actual, predictions, weights):
     return float(sum((actual == predictions) * weights)/sum(weights))
 
@@ -28,17 +31,21 @@ def xval(target, train, weights):
         print "{}  {}".format(name.ljust(max_name_length),
                 np.array(results).mean())
 
+def excess_mispredictions(dataset):
+    excess_misprediction_frequency = abs(2 * dataset[:, prob] - 1)
+    return dataset[:, total] * excess_misprediction_frequency
+
 def main():
     #read in  data, parse into training and target sets
     dataset = read_files(sys.argv[1:])
-    target = dataset[:, 11]
-    train = dataset[:, 0:9]
-    print "\nResults weighted equally"
-    xval(target, train, np.ones(dataset.shape[0]))
-    print "\nResults weighted by branch frequency"
-    xval(target, train, dataset[:, 9])
+    target = dataset[:, prediction]
+    train = dataset[:, call:total]
+    # print "\nResults weighted equally"
+    # xval(target, train, np.ones(dataset.shape[0]))
+    # print "\nResults weighted by branch frequency"
+    # xval(target, train, dataset[:, total])
     print "\nResults weighted by number of mispredictions"
-    xval(target, train, dataset[:, 9] * (0.5 + abs(dataset[:, 10] - 0.5)))
+    xval(target, train, excess_mispredictions(dataset))
 
 if __name__=="__main__":
     main()

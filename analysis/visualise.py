@@ -45,12 +45,13 @@ def show_prob_impact(num_bars):
     show_prob_fn(num_bars, impact)
     ylabel("Number of branch events with probabilities in this range")
 
-def num_mispredictions(indices):
-    return sum(data[indices, total] * (0.5 + abs(data[indices, prob] - 0.5)))
+def excess_mispredictions(indices):
+    excess_misprediction_frequency = abs(2 * data[indices, prob] - 1)
+    return sum(data[indices, total] * excess_misprediction_frequency)
 
 def show_prob_cost(num_bars):
-    show_prob_fn(num_bars, num_mispredictions)
-    ylabel("Number of mispredictions if you predict all these branches wrongly")
+    show_prob_fn(num_bars, excess_mispredictions)
+    ylabel("Number of extra mispredictions if you mispredict these branches")
 
 def print_percentage(name, count, total_count):
     print "{}: {}, ({}%)".format(name, count, 100*(count + 0.0)/total_count)
