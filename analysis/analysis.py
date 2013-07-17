@@ -22,7 +22,7 @@ def read_raw_file(filename):
 
 def munge(data):
     [call, guard, loop_branch, loop_exit, loop_header, opcode, pointer, ret,
-        store, name, not_taken, taken] = xrange(0, 12)
+        store, file_total, name, not_taken, taken] = xrange(0, 13)
     data = np.array(data)
     data = np.array(np.delete(data, [name], 1), np.float)
     not_taken -=1
@@ -32,11 +32,12 @@ def munge(data):
     data = np.delete(data, zeroes, 0)
     total = np.delete(total, zeroes, 0)
     probs = data[:, taken] / total
+    total = total / data[:, file_total]
     # XXX we actually want to minimise E(lost cycles)
     # The best threshold may not be at 50%
     predict_taken = data[:, taken] > data[:, not_taken]
     data = np.hstack([data, np.column_stack((total, probs, predict_taken))])
-    data = np.delete(data, [not_taken, taken], 1)
+    data = np.delete(data, [not_taken, taken, file_total], 1)
     return np.array(data, np.float)
 
 def read_files(filenames):

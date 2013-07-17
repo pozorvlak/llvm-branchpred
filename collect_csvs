@@ -7,6 +7,7 @@ use 5.010;
 use Text::CSV::Slurp;
 use File::Find;
 use Getopt::Std;
+use List::Util qw/sum/;
 
 my %opts;
 getopt(\%opts, 'os');
@@ -22,7 +23,9 @@ srand(12345); # That's the kind of seed an idiot would use for his luggage!
 sub read_file {
     if (/\.csv$/) {
         my $data = Text::CSV::Slurp->load(file => $_);
+        my $file_total = sum(map { $_->{taken} + $_->{"not taken"} } @$data);
         for my $datum (@$data) {
+            $datum->{file_total} = $file_total;
             if (rand > 0.1) {
                 push @training, $datum;
             } else {
