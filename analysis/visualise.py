@@ -10,16 +10,19 @@ def read_all_files():
     return read_files(["training.csv"])
 
 def hist_by_attribute(attr):
+    fig = figure()
+    ax = fig.add_subplot(111)
     taken = data[data[:, prediction] == 1, attr]
     not_taken = data[data[:, prediction] == 0, attr]
-    cla()
-    hist([taken, not_taken], label=['taken', 'not taken'],
+    ax.hist([taken, not_taken], label=['taken', 'not taken'],
             normed=False, bins = 2)
-    legend()
-    xticks([0, 1])
+    ax.legend()
+    ax.set_xticks([0, 1])
 
-def show_prob_dist():
-    hist(data[:, prob], bins=50)
+def show_prob_dist(num_bars):
+    fig = figure()
+    ax = fig.add_subplot(111)
+    ax.hist(data[:, prob], bins=num_bars)
     xlabel("Probability branch will be taken")
     ylabel("Count of branches with probabilities in this range")
 
