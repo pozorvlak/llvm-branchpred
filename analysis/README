@@ -1,0 +1,26 @@
+Yay, it's a directory full of undocumented Python scripts with no tests.
+
+analysis.py             read and munge CSV files, build classifiers
+logloss.py              log-loss cost function
+test.csv                test set, chosen from 10% of branch instructions
+training.csv            training set, chosen from 90% of branch instructions
+visualise.py            data-visualisation code for use within PyLab
+wularusclassifier.py    Wu-Larus branch classifier, for baseline
+xval.py                 Cross-validation code
+
+
+What the hell should I actually do?
+-----------------------------------
+
+Run `./xval.py training.csv` to get a report on classifier performance. To draw graphs, install IPython (http://ipython.org/) run `ipython -pylab`, and type
+
+import visualise
+visualise.show_prob_dist(20)
+visualise.show_prob_cost(20)
+hist_by_attribute(visualise.loop_branch)
+
+to draw some hopefully self-explanatory graphs. Less self-explanatory is
+visualise.scatter2d_with_jitter(), which performs Principal Component Analysis
+on the dataset to squash the feature-space down to two dimensions, adds some
+jitter so the points don't all overlap each other so much, then does a
+scatter-plot.
