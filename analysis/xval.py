@@ -3,6 +3,7 @@ from sklearn import cross_validation
 import numpy as np
 import sys as sys
 from analysis import read_files, classifiers
+from argparse import ArgumentParser
 
 [call, guard, loop_branch, loop_exit, loop_header, opcode, pointer, ret,
         store, total, prob, prediction] = xrange(0, 12)
@@ -24,17 +25,19 @@ def xval_score(cfr, target, train, weights):
         results.append(score)
     return np.array(results).mean()
 
-def xval(target, train, weights):
+def xval(target, train, weights, verbose):
     """Cross-validate all classifiers, and print out their scores"""
     cs = classifiers()
     max_name_length = max([len(name) for name in cs.keys()])
-    print "Percentage accuracy: higher numbers are better"
+    if verbose:
+        print "Percentage accuracy: higher numbers are better"
     best_score = 0
     best_name = "Always wrong"
     for name in cs.keys():
         score = xval_score(cs[name], target, train, weights)
         #print out the mean of the cross-validated results
-        print "{}  {}".format(name.ljust(max_name_length), score)
+        if verbose:
+            print "{}  {}".format(name.ljust(max_name_length), score)
         if score > best_score:
             best_score = score
             best_name = name
@@ -45,16 +48,21 @@ def excess_mispredictions(dataset):
     return dataset[:, total] * excess_misprediction_frequency
 
 def main():
+    parser = ArgumentParser(description="Cross-validate classifiers")
+    parser.add_argument('-v', dest='verbose', action='store_true',
+            help='show scores for all classifiers, not just the best ones')
+    parser.add_argument('files', metavar='file', action='append')
+    args = parser.parse_args()
     #read in  data, parse into training and target sets
-    dataset = read_files(sys.argv[1:])
+    dataset = read_files(args.files)
     target = dataset[:, prediction]
     train = dataset[:, call:total]
     print "\nResults weighted equally"
-    xval(target, train, np.ones(dataset.shape[0]))
+    xval(target, train, np.ones(dataset.shape[0]), args.verbose)
     print "\nResults weighted by branch frequency"
-    xval(target, train, dataset[:, total])
+    xval(target, train, dataset[:, total], args.verbose)
     print "\nResults weighted by number of mispredictions"
-    xval(target, train, excess_mispredictions(dataset))
+    xval(target, train, excess_mispredictions(dataset), args.verbose)
 
 if __name__=="__main__":
     main()
