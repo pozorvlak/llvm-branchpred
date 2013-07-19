@@ -4,6 +4,7 @@ import numpy as np
 import sys as sys
 from analysis import read_files, classifiers
 from argparse import ArgumentParser
+from walkerrandom import WalkerRandom
 
 [call, guard, loop_branch, loop_exit, loop_header, opcode, pointer, ret,
         store, total, prob, prediction] = xrange(0, 12)
@@ -47,6 +48,11 @@ def excess_mispredictions(dataset):
     excess_misprediction_frequency = abs(2 * dataset[:, prob] - 1)
     return dataset[:, total] * excess_misprediction_frequency
 
+def sample(dataset):
+    wrand = WalkerRandom(dataset[:, total])
+    indices = [ wrand.random() for i in xrange(0, 1000) ]
+    return dataset[indices, :]
+
 def main():
     parser = ArgumentParser(description="Cross-validate classifiers")
     parser.add_argument('-v', dest='verbose', action='store_true',
@@ -54,7 +60,7 @@ def main():
     parser.add_argument('files', metavar='file', action='append')
     args = parser.parse_args()
     #read in  data, parse into training and target sets
-    dataset = read_files(args.files)
+    dataset = sample(read_files(args.files))
     target = dataset[:, prediction]
     train = dataset[:, call:total]
     print "\nResults weighted equally"
