@@ -40,10 +40,10 @@ def main():
     dataset = read_files(sys.argv[1:])
     target = dataset[:, prediction]
     train = dataset[:, call:total]
-    # print "\nResults weighted equally"
-    # xval(target, train, np.ones(dataset.shape[0]))
-    # print "\nResults weighted by branch frequency"
-    # xval(target, train, dataset[:, total])
+    print "\nResults weighted equally"
+    xval(target, train, np.ones(dataset.shape[0]))
+    print "\nResults weighted by branch frequency"
+    xval(target, train, dataset[:, total])
     print "\nResults weighted by number of mispredictions"
     xval(target, train, excess_mispredictions(dataset))
 
