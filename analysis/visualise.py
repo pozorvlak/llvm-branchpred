@@ -56,6 +56,12 @@ def show_prob_cost(num_bars):
     show_prob_fn(num_bars, excess_mispredictions)
     ylabel("Number of extra mispredictions if you mispredict these branches")
 
+def show_cost_hist(num_bars):
+    fig = figure()
+    ax = fig.add_subplot(111)
+    mispredictions = abs(2 * data[:, prob] - 1) * data[:, total]
+    ax.hist(mispredictions, bins=num_bars)
+
 def print_percentage(name, count, total_count):
     print "{}: {}, ({}%)".format(name, count, 100*(count + 0.0)/total_count)
 
