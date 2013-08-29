@@ -50,7 +50,7 @@ def excess_mispredictions(dataset):
 
 def sample(dataset):
     wrand = WalkerRandom(dataset[:, total])
-    indices = [ wrand.random() for i in xrange(0, 1000) ]
+    indices = [ wrand.random() for i in xrange(0, 100000) ]
     return dataset[indices, :]
 
 def main():
