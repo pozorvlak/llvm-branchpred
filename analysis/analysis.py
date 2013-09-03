@@ -20,6 +20,13 @@ def read_raw_file(filename):
         data.append(row)
     return data
 
+def prediction(probs):
+    """Should we predict that the branch is taken? We ignore delay slots and
+    instruction selection."""
+    cycles_if_predict_taken     = probs * 1 + (1 - probs) * 3
+    cycles_if_predict_not_taken = probs * 3 + (1 - probs) * 2
+    return cycles_if_predict_taken > cycles_if_predict_not_taken
+
 def munge(data):
     [call, guard, loop_branch, loop_exit, loop_header, opcode, pointer, ret,
         store, file_total, name, not_taken, taken] = xrange(0, 13)
@@ -33,9 +40,7 @@ def munge(data):
     total = np.delete(total, zeroes, 0)
     probs = data[:, taken] / total
     total = total / data[:, file_total]
-    # XXX we actually want to minimise E(lost cycles)
-    # The best threshold may not be at 50%
-    predict_taken = data[:, taken] > data[:, not_taken]
+    predict_taken = prediction(probs)
     data = np.hstack([data, np.column_stack((total, probs, predict_taken))])
     data = np.delete(data, [not_taken, taken, file_total], 1)
     return np.array(data, np.float)
